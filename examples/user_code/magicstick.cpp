@@ -12,6 +12,9 @@
 
 #include <cmath>
 
+
+using namespace cv;
+
 #define STICK_RELATIVE_LENGTH 0.9
 
 double stick_point_x, stick_point_y;
