@@ -43,7 +43,7 @@ void display(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& dat
             // Display image
             const cv::Mat cvMat = OP_OP2CVCONSTMAT(datumsPtr->at(0)->cvOutputData);
             Point stick_end(round(stick_point_x),round(stick_point_y));
-            circle(cvMat, stick_end, 1, Scalar(0, 255, 0), -1);
+            circle(cvMat, stick_end, 100, Scalar(0, 255, 0), -1);
             cv::imshow(OPEN_POSE_NAME_AND_VERSION + " - Tutorial C++ API", cvMat);
             cv::waitKey(0);
         }
