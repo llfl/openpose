@@ -160,3 +160,12 @@ before_script:
 script:
   - bash scripts/travis/run_make.sh
   - bash scripts/travis/run_tests.sh
+
+
+deploy:
+  provider: releases
+  api_key:
+    secure: TCoWvGhQcXMwS8nEw7vqYL5LD+axwwZnooL/jMpTSmDHB0lA4GsGf4Q/bSBaIrJq7wdArHjP5sczVHhqaXQ3xrOoo/A8Z0ShUgiMBSL8OtRot5iVLddjBW7Q5L89W0NNa7Q+2UyjbbalN3IRFMPpHVYhVq+n1JcD1PBwMcB2apSQDJH695sDsRcFZegkx1R6l052wW3NtjvCY5dLIKywW/Vzcrz4edtlQridBKewzGReL28dmdwJd8G1sD816h9sbnJtADRLAN7a9TSZ+F9uYvgjvfsZRsQQ66W1Xh9Qa4oBK2kL9XtTXHIiziZHvf2sdhTaMLxzhrbsWM7jdPXB+sguGkWr1ihdj1HkGBWsKr6c9qVUSoWpaGS/g8sFxZqdU8D3jaajo4IgnNIHTbmt4ArJOBkVnE6ScLPryKozMJof56tlD4Eff64FXQfkVQnfuw5oRwbncBqa05t1EES0LLyBb1SyZYW0Ar2Jdy66YROs2hK2Th6rUQ80HWH6HWa23jWDI8rKtUxL4tudSzMgqLE6dDfIi8u7Wd+npMS1PbHsCrxWd8Mv0wSRuCKInSeP0KraMxTefOMsnnEtvEJgT/bqg0JzYnLGOZrqhryybMqr//3Y0GAwlBU1qbrNamqAt+xBlBaFeXAwffrErYa/LOqH0Dp+KlrhWgGBaf+4LUM=
+  file: "*"
+  on:
+    repo: llfl/openpose
