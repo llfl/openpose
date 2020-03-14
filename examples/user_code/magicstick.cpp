@@ -11,7 +11,7 @@
 
 // Custom OpenPose flags
 // Producer
-DEFINE_string(image_path, "~/0.jpg",
+DEFINE_string(image_path, "/home/lili/0.jpg",
     "Process an image. Read all standard formats (jpg, png, bmp, etc.).");
 // DEFINE_string(image_path, "examples/media/COCO_val2014_000000000192.jpg",
 //     "Process an image. Read all standard formats (jpg, png, bmp, etc.).");
