@@ -9,6 +9,13 @@
 // OpenPose dependencies
 #include <openpose/headers.hpp>
 
+#include <cmath>
+
+#define STICK_RELATIVE_LENGTH 0.9
+
+double stick_point_x, stick_point_y;
+
+
 // Custom OpenPose flags
 // Producer
 DEFINE_string(image_path, "/home/lili/0.jpg",
@@ -31,6 +38,8 @@ void display(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& dat
         {
             // Display image
             const cv::Mat cvMat = OP_OP2CVCONSTMAT(datumsPtr->at(0)->cvOutputData);
+            Point stick_end(round(stick_point_x),round(stick_point_y));
+            circle(cvMat, stick_end, 1, Scalar(0, 255, 0), -1);
             cv::imshow(OPEN_POSE_NAME_AND_VERSION + " - Tutorial C++ API", cvMat);
             cv::waitKey(0);
         }
@@ -72,7 +81,17 @@ void printKeypoints(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>
                     for (auto xyscore = 0 ; xyscore < poseKeypoints.getSize(2) ; xyscore++)
                         valueToPrint += std::to_string(   poseKeypoints[{person, bodyPart, xyscore}]   ) + " ";
                     op::opLog(valueToPrint, op::Priority::High);
+
                 }
+
+                //calculate the stick
+                double RElbowx = poseKeypoints[{person, 3, 0}];
+                double RElbowy = poseKeypoints[{person, 3, 1}];
+                double RWristx = poseKeypoints[{person, 4, 0}];
+                double RWristy = poseKeypoints[{person, 4, 1}];
+                double length_arm = sqrt(pow(RElbowx - RWristx, 2) + pow(RElbowy - RWristy, 2));
+                stick_point_x = RWristx + STICK_RELATIVE_LENGTH * length_arm * (RWristx - RElbowx);
+                stick_point_y = RWristy + STICK_RELATIVE_LENGTH * length_arm * (RWristy - RElbowy);
             }
             op::opLog(" ", op::Priority::High);
         }
