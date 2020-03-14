@@ -98,10 +98,10 @@ matrix:
     env: NAME="U16-default-cmake-cpu" WITH_CUDA=false
     sudo: required
   # Ubuntu 16.04 - Default - Make - CUDA
-  - os: linux
-    dist: xenial
-    env: NAME="U16-default-make-cuda8" WITH_CMAKE=false
-    sudo: required
+  # - os: linux
+  #   dist: xenial
+  #   env: NAME="U16-default-make-cuda8" WITH_CMAKE=false
+  #   sudo: required
   # # TO-DO: To be implemented
   # # Ubuntu 16.04 - Default - CMake - CPU MKL
   # - os: linux
@@ -120,15 +120,15 @@ matrix:
   #   env: NAME="U16-default-cmake-cuda8-nocudnn" WITH_CUDNN=false
   #   sudo: required
   # Ubuntu 14.04 - Default - CMake - CPU
-  - os: linux
-    dist: trusty
-    env: NAME="U14-default-cmake-cpu" WITH_CUDA=false
-    sudo: required
+  # - os: linux
+  #   dist: trusty
+  #   env: NAME="U14-default-cmake-cpu" WITH_CUDA=false
+  #   sudo: required
   # Ubuntu 14.04 - Default - Make - CUDA
-  - os: linux
-    dist: trusty
-    env: NAME="U14-default-make-cuda8" WITH_CMAKE=false
-    sudo: required
+  # - os: linux
+  #   dist: trusty
+  #   env: NAME="U14-default-make-cuda8" WITH_CMAKE=false
+  #   sudo: required
   # # Unnecessary/redundant ones
   # # Ubuntu 14.04 - Default - CMake - CUDA
   # - os: linux
@@ -145,6 +145,7 @@ addons:
       - doxygen-latex
       - doxygen-gui
       - graphviz
+      - tar
   # artifacts:
   #   key:
   #     secure: I7XuoiJrYhZR2GRhDSlPOUYnn7JN1e2w15fbxf/e4I8koj0r/z4VjFmlI7UUmcflT5i+XcpJloSgoYH4d5WlHadIEiEz8p6u/UlC1zNwJNiKIvUB6UAn+/+p53BejR89dgJiLlYCkkBM+LhMOHV4UOCWLV50bKtyWcYidGpRRwGBxnQEfq004VMJqFtqgP2F840LtyVJ4W9fRJMeDG8+AeTDYI4PixWb6z1DqPHp3xzSmb8EbD31NEDy+sZm0sEL+mGThz8NZuPYzBt3U8F1/zlPWgvUdfDAssF08Ui32nBrwI3oCPt2HWmd2aipdOcOhJkQM5+Y2BtgQfogTZFg/52e6fDYV+pU5EsP/jeXgnpTKH9x0dgi69PLNLA43GBjvAj28IPsp89M1WEKfTP9W7MOFeyZIZR0547FCo8tiGoOWs0frCD49cA5A8m/Vd2Xz4lBjY9LTwTZWMIx+tPt0ggBDpJ+HRDQa0NhumzT3OTLEcEtuXhBEhXUhtUVrVop0UvCBeinZ60DbFpKqYgWPz/O7/oxo75yS1QAjcHmI/8cKdlF1BfCCKyD11ACHYs7zKvsAWICl65sTIejV5uSIPWxZ2iZP5ZrNPYQbCZLKn0tnkejUq30k5f330taFGoyDd2tOhWPqLuhHnIcZ42ezjQjLAgVpBFTBeEmC/z+cR0=
@@ -168,18 +169,14 @@ script:
   - bash scripts/travis/run_make.sh
   - bash scripts/travis/run_tests.sh
 
-after_script:
-  - 
-
 deploy:
   provider: s3
   access_key_id: AKIA2CFEPSKA2MCWL2ZJ
   secret_access_key:
     secure: Yn2rqdzEuKBLhx4m/LoIEzI9MIVwqNjTb+kp6CoC8o/3jT+4zhwfphSir+keRpmkYfxnp3y9znrcKOwV7DN64H4vMaj+LdrhtuBdLiCqHO7Fu/fU/qb0+o0wsaxSLhnyju7eVGgxqDTDWRUkGfA2mp8BkHO6IxQftSerAhEia5h8EwDIHdpFpZe3bYtz5uFwxVQjoD/X6oo/IPiuE2oL4+QHqRRcy0GLWWGZ1Wjg0/Piz47UslQ8cGWQyHbHCs9ECz0lib21hdmgBvBEBViVAOhzm6VYV45+JF+AX6hIn8VJub7+pdP1hTTFupz1bONMtyXvTGnNke1PZhDsz0j3w0IQp617kzi22nzWVpOEp+3fDUA8tWhUq6uj2ZwCiXgsGGs+2MgCHyEQRSEs9T94Gs0UwihML579uzjgP21u5MuF+XUyItEmzAPO4DCueJJJVCxcL+VxIQZ1IqbOyzzwVfBKSok+vK01IXTKpNDjBD4l8OPoB50GxL9poPjBxluvFKN7d/fF4Q+y/Bx9Uh/JrSTlWjHwSX1In+m77zHSIhMnBrwC1K8MT4ntUwAa5WQfH4Dv2ynFKlEfeOiYDBNuymKmjiSKO9ZAfFRNwQW1324mTYCLUA8IbBV1KY/5GRlmG0xBZ9yJinMzuUNCuBza6FSv+ABUz76IwbthEhyJkuU=
   bucket: llfltest
-  local-dir: "./"
-  upload-dir: "travis-builds-$NAME"
-  acl: bucket_owner_full_control
+  local-dir: build
+  upload-dir: "travis-builds-$NAME-latest"
   skip_cleanup: true
   on:
     repo: llfl/openpose
