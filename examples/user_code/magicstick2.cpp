@@ -45,31 +45,31 @@ public:
                 // datumPtr->poseKeypoints: Array<float> with the estimated pose
             if (datumsPtr != nullptr && !datumsPtr->empty())
             {
-                const auto& poseKeypoints = datumsPtr->at(0)->poseKeypoints;
-                double RElbowx = poseKeypoints[{0, 3, 0}];
-                double RElbowy = poseKeypoints[{0, 3, 1}];
-                double RWristx = poseKeypoints[{0, 4, 0}];
-                double RWristy = poseKeypoints[{0, 4, 1}];
-                vector<int>stick_end(2);
-
-                stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
-                stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
-                vector<int>stick_last = stick_point.back();
-                if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
-                {
-                    fin_state = (fin_state + 1) % DURATION;
-                    if (fin_state == 0 && stick_point.size() > 1)
-                    {
-                        stick_point.clear();
-                    }
-                }
-                else{
-                    stick_point.push_back(stick_end);
-                }
-                
 
                 for (auto& datumPtr : *datumsPtr)
                 {
+                    const auto& poseKeypoints = datumsPtr->poseKeypoints;
+                    double RElbowx = poseKeypoints[{0, 3, 0}];
+                    double RElbowy = poseKeypoints[{0, 3, 1}];
+                    double RWristx = poseKeypoints[{0, 4, 0}];
+                    double RWristy = poseKeypoints[{0, 4, 1}];
+                    vector<int>stick_end(2);
+
+                    stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
+                    stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
+                    vector<int>stick_last = stick_point.back();
+                    if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <=   MIN_VELOCITY)
+                    {
+                        fin_state = (fin_state + 1) % DURATION;
+                        if (fin_state == 0 && stick_point.size() > 1)
+                        {
+                            stick_point.clear();
+                        }
+                    }
+                    else{
+                        stick_point.push_back(stick_end);
+                    }
+
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
                     cv::Point current_stick_end(stick_end[0],stick_end[1]);
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
