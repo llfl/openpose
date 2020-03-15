@@ -74,7 +74,7 @@ public:
                             cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
                             for (int i = 0; i<stick_point.size(); ++i )
                             {
-                                stick_pattern(stick_point[i][0],stick_point[i][1]) = 0;
+                                stick_pattern.at<cv::Vec3b>(stick_point[i][0],stick_point[i][1]) = 0;
                             }
                             pattern_no ++;
                             cv::imwrite(std::to_string(pattern_no)+"hello.jpg", stick_pattern);
