@@ -66,20 +66,20 @@ public:
                 // else{
                 //     stick_point.push_back(stick_end);
                 // }
-                
+                stick_point.push_back(stick_end);
 
                 for (auto& datumPtr : *datumsPtr)
                 {
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
                     cv::Point current_stick_end(stick_end[0],stick_end[1]);
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
-                    // for (int i = 1; i<stick_point.size(); ++i )
-                    // {
-                    //     cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
-                    //     cv::Point b(stick_point[i][0],stick_point[i][1]);
-                    //     cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
-                    // }
-                    // cv::bitwise_not(cvOutputData, cvOutputData);
+                    for (int i = 1; i<stick_point.size(); ++i )
+                    {
+                        cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
+                        cv::Point b(stick_point[i][0],stick_point[i][1]);
+                        cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
+                    }
+                    cv::bitwise_not(cvOutputData, cvOutputData);
                 }
             }
         }
