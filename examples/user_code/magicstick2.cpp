@@ -90,7 +90,7 @@ public:
                             }
                             int long_side = maxx-minx;
                             if(long_side < maxy-maxy) long_side = maxy - maxy;
-                            cv::Rect area(minx, miny , long_side,long_side);
+                            cv::Rect area(minx-2, miny-2 , long_side+2,long_side+2);
                             cv::Mat resize_pattern = stick_pattern(area);
                             // cv::Mat crop_pattern = stick_pattern(area);
                             // cv::Mat resize_pattern(28, 28, CV_8UC1);
