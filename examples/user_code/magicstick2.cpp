@@ -48,8 +48,9 @@ public:
                 double RWristx = poseKeypoints[{0, 4, 0}];
                 double RWristy = poseKeypoints[{0, 4, 1}];
                 vector<int>stick_end(2);
-                
-                stick_end((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)), (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)));
+
+                stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
+                stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
                 stick_point.push_back(stick_end);
 
                 for (auto& datumPtr : *datumsPtr)
