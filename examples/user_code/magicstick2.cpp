@@ -18,7 +18,10 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 50
+#define DURATION 5
+#define MIN_VELOCITY 10
+
+int fin_state = 0;
 
 vector<vector<int> > stick_point;
 
@@ -51,22 +54,30 @@ public:
 
                 stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                 stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
-                stick_point.push_back(stick_end);
+                vector<int>stick_last = stick_point.back();
+                if(pow(stick_last[0] - stick_end[0], 2) + pow(stick_last[1] - stick_end[1], 2) <= MIN_VELOCITY)
+                {
+                    fin_state = (fin_state + 1) % DURATION;
+                    if (fin_state == 0)
+                    {
+                        stick_point.clear();
+                    }
+                }
+                else{
+                    stick_point.push_back(stick_end);
+                }
+                
 
                 for (auto& datumPtr : *datumsPtr)
                 {
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
                     cv::Point current_stick_end(stick_point.back()[0],stick_point.back()[1]);
-                    if(stick_point.size() >= DURATION)
-                    {
-                        stick_point.erase(stick_point.begin());
-                    }
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
                     for (int i = 1; i<stick_point.size(); ++i )
                     {
-                        cv::Point last_point(stick_point[i-1][0],stick_point[i-1][1]);
-                        cv::Point now_point(stick_point[i][0],stick_point[i][1]);
-                        cv::line(cvOutputData, last_point, now_point, cv::Scalar(0, 255, 0), 2);
+                        cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
+                        cv::Point b(stick_point[i][0],stick_point[i][1]);
+                        cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
                     }
                     // cv::bitwise_not(cvOutputData, cvOutputData);
                 }
