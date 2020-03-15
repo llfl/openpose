@@ -80,9 +80,9 @@ public:
                             {
                                 // stick_pattern.at<cv::Vec3b>(stick_point[i][0],stick_point[i][1]) = 0;
                                 if(minx>stick_point[i][0])minx = stick_point[i][0];
-                                if(maxx<stick_point[i][0])manx = stick_point[i][0];
+                                if(maxx<stick_point[i][0])maxx = stick_point[i][0];
                                 if(miny>stick_point[i][1])miny = stick_point[i][1];
-                                if(maxy<stick_point[i][1])many = stick_point[i][1];
+                                if(maxy<stick_point[i][1])maxy = stick_point[i][1];
 
                                 cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
                                 cv::Point b(stick_point[i][0],stick_point[i][1]);
