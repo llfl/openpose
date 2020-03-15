@@ -20,7 +20,7 @@ using namespace std;
 #define STICK_RELATIVE_LENGTH 2
 #define DURATION 90
 
-vector<cv::Point<int> > stick_point;
+vector<vector<int> > stick_point;
 
 // This worker will just invert the image
 class WUserPostProcessing : public op::Worker<std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>>
@@ -47,7 +47,8 @@ public:
                 double RElbowy = poseKeypoints[{0, 3, 1}];
                 double RWristx = poseKeypoints[{0, 4, 0}];
                 double RWristy = poseKeypoints[{0, 4, 1}];
-               cv::Point stick_end;
+                vector<int>stick_end(2);
+                
                 stick_end((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)), (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)));
                 stick_point.push_back(stick_end);
 
