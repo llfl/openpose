@@ -56,7 +56,11 @@ public:
                 for (auto& datumPtr : *datumsPtr)
                 {
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
-                    cv::Point current_stick_end(stick_point.front()[0],stick_point.front()[1]);
+                    cv::Point current_stick_end(stick_point.back()[0],stick_point.back()[1]);
+                    if(stick_point.size() >= DURATION)
+                    {
+                        stick_point.erase(stick_point.front());
+                    }
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
 
                     // cv::bitwise_not(cvOutputData, cvOutputData);
