@@ -70,16 +70,30 @@ public:
                         if (fin_state == 0 && stick_point.size() > 1)
                         {
                             cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
+                            int minx, maxx, miny, maxy;
+                            minx = stick_point[0][0];
+                            maxx = stick_point[0][0];
+                            miny = stick_point[0][1];
+                            maxy = stick_point[0][1];
 
                             for (int i = 1; i<stick_point.size(); ++i )
                             {
                                 // stick_pattern.at<cv::Vec3b>(stick_point[i][0],stick_point[i][1]) = 0;
+                                if(minx>stick_point[i][0])minx = stick_point[i][0];
+                                if(maxx<stick_point[i][0])manx = stick_point[i][0];
+                                if(miny>stick_point[i][1])miny = stick_point[i][1];
+                                if(maxy<stick_point[i][1])many = stick_point[i][1];
+
                                 cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
                                 cv::Point b(stick_point[i][0],stick_point[i][1]);
                                 cv::line(stick_pattern, a, b, 0, 2);
                             }
+                            int long_side = maxx-minx;
+                            if(long_side < maxy-maxy) long_side = maxy - maxy;
+                            cv::Rect area(minx, miny , long_side,long_side);
+                            cv::Mat crop_pattern = stick_pattern(area);
                             cv::Mat resize_pattern(28, 28, CV_8UC1);
-                            cv::resize(stick_pattern, resize_pattern, cv::Size(28,28));
+                            cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
                             pattern_no ++;
                             cv::imshow(std::to_string(pattern_no), resize_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello1.jpg", resize_pattern);
