@@ -101,7 +101,7 @@ void printKeypoints(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>
 
                 int a = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                 int b = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
-                op::opLog("ais"+a+"bis"+b+"allis"+stick_end,op::Priority::High);
+                op::opLog("ais"+toString(a)+"bis"+toString(b)+"allis"+toString(stick_end),op::Priority::High);
                 // cv:Point stick_end(round(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)), rount(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
                 stick_point.push(stick_end);
             }
