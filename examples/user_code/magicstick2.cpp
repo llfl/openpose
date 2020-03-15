@@ -18,8 +18,8 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 1
-#define MIN_VELOCITY 10000
+#define DURATION 2
+#define MIN_VELOCITY 1000
 
 int fin_state = 0;
 
@@ -58,7 +58,7 @@ public:
                 if(pow(stick_last[0] - stick_end[0], 2) + pow(stick_last[1] - stick_end[1], 2) <= MIN_VELOCITY)
                 {
                     fin_state = (fin_state + 1) % DURATION;
-                    if (fin_state == 0)
+                    if (fin_state == 0 && stick_point.size() > 1)
                     {
                         stick_point.clear();
                     }
