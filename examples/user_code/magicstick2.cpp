@@ -69,15 +69,16 @@ public:
                         fin_state = (fin_state + 1) % DURATION;
                         if (fin_state == 0 && stick_point.size() > 1)
                         {
-                            
-                            op::opLog("haha lalal", op::Priority::High);
                             cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
                             for (int i = 0; i<stick_point.size(); ++i )
                             {
                                 stick_pattern.at<cv::Vec3b>(stick_point[i][0],stick_point[i][1]) = 0;
                             }
                             pattern_no ++;
+                            cv::imshow(std::to_string(pattern_no), stick_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello.jpg", stick_pattern);
+                            
+                            op::opLog("haha lalal", op::Priority::High);
                             stick_point.clear();
                         }
                     }
