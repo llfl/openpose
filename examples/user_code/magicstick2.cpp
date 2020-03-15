@@ -22,6 +22,7 @@ using namespace std;
 #define MIN_VELOCITY 5
 
 int fin_state = 0;
+int pattern_no = 0;
 
 vector<vector<int> > stick_point;
 
@@ -48,6 +49,8 @@ public:
 
                 for (auto& datumPtr : *datumsPtr)
                 {
+                    cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
+
                     const auto& poseKeypoints = datumPtr->poseKeypoints;
                     double RElbowx = poseKeypoints[{0, 3, 0}];
                     double RElbowy = poseKeypoints[{0, 3, 1}];
@@ -66,8 +69,16 @@ public:
                         fin_state = (fin_state + 1) % DURATION;
                         if (fin_state == 0 && stick_point.size() > 1)
                         {
-                            stick_point.clear();
+                            
                             op::opLog("haha lalal", op::Priority::High);
+                            cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
+                            for (int i = 0; i<stick_point.size(); ++i )
+                            {
+                                stick_patten[stick_point[i][0]][stick_point[i][1]] = 0;
+                            }
+                            pattern_no ++;
+                            cv::imwrite(std::to_string(pattern_no)+"hello.jpg", stick_patten);
+                            stick_point.clear();
                         }
                     }
                     else{
@@ -75,7 +86,7 @@ public:
                     }
                     // stick_point.push_back(stick_end);
 
-                    cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
+                    
                     cv::Point current_stick_end(stick_end[0],stick_end[1]);
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
                     for (int i = 1; i<stick_point.size(); ++i )
