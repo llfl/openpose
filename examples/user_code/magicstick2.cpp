@@ -18,8 +18,8 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 3
-#define MIN_VELOCITY 1000
+#define DURATION 1
+#define MIN_VELOCITY 10000
 
 int fin_state = 0;
 
