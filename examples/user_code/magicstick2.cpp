@@ -19,7 +19,7 @@
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
 #define DURATION 2
-#define MIN_VELOCITY 100
+#define MIN_VELOCITY 10
 
 int fin_state = 0;
 
@@ -54,19 +54,19 @@ public:
 
                 stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                 stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
-                // vector<int>stick_last = stick_point.back();
-                // if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
-                // {
-                //     fin_state = (fin_state + 1) % DURATION;
-                //     if (fin_state == 0 && stick_point.size() > 1)
-                //     {
-                //         stick_point.clear();
-                //     }
-                // }
-                // else{
-                //     stick_point.push_back(stick_end);
-                // }
-                stick_point.push_back(stick_end);
+                vector<int>stick_last = stick_point.back();
+                if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
+                {
+                    fin_state = (fin_state + 1) % DURATION;
+                    if (fin_state == 0 && stick_point.size() > 1)
+                    {
+                        stick_point.clear();
+                    }
+                }
+                else{
+                    stick_point.push_back(stick_end);
+                }
+                
 
                 for (auto& datumPtr : *datumsPtr)
                 {
@@ -79,7 +79,7 @@ public:
                         cv::Point b(stick_point[i][0],stick_point[i][1]);
                         cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
                     }
-                    cv::bitwise_not(cvOutputData, cvOutputData);
+                    // cv::bitwise_not(cvOutputData, cvOutputData);
                 }
             }
         }
