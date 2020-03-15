@@ -97,7 +97,7 @@ void printKeypoints(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>
                 double RWristx = poseKeypoints[{person, 4, 0}];
                 double RWristy = poseKeypoints[{person, 4, 1}];
                 // double length_arm = sqrt(pow(RElbowx - RWristx, 2) + pow(RElbowy - RWristy, 2));
-                long stick_end = ((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx))) << 16 + ((int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)));
+                long stick_end = ((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx))) << 16 + ((int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)))&0xffff;
 
                 int a = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                 int b = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
