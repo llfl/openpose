@@ -79,7 +79,7 @@ public:
                                 cv::line(stick_pattern, a, b, 0, 2);
                             }
                             cv::Mat resize_pattern(28, 28, CV_8UC1);
-                            cv::resize(stick_pattern, resize_pattern, 28, 28);
+                            cv::resize(stick_pattern, resize_pattern, cv::Size(28,28));
                             pattern_no ++;
                             cv::imshow(std::to_string(pattern_no), resize_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello1.jpg", resize_pattern);
