@@ -6,6 +6,8 @@
     // 4. Display the rendered pose.
 // If the user wants to learn to use the OpenPose C++ library, we highly recommend to start with the examples in
 // `examples/tutorial_api_cpp/`.
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc.hpp>
 
 // Command-line user interface
 #include <openpose/flags.hpp>
