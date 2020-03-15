@@ -71,7 +71,7 @@ public:
                 for (auto& datumPtr : *datumsPtr)
                 {
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
-                    cv::Point current_stick_end(stick_point.back()[0],stick_point.back()[1]);
+                    cv::Point current_stick_end(stick_end[0],stick_end[1]);
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
                     for (int i = 1; i<stick_point.size(); ++i )
                     {
