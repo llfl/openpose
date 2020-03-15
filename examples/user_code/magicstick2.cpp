@@ -16,6 +16,12 @@
 
 #include <cmath>
 
+using namespace std;
+#define STICK_RELATIVE_LENGTH 2
+#define DURATION 90
+
+queue<deque<int> > stick_point;
+
 // This worker will just invert the image
 class WUserPostProcessing : public op::Worker<std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>>
 {
@@ -36,10 +42,25 @@ public:
                 // datumPtr->poseKeypoints: Array<float> with the estimated pose
             if (datumsPtr != nullptr && !datumsPtr->empty())
             {
+                const auto& poseKeypoints = datumsPtr->at(0)->poseKeypoints;
+                double RElbowx = poseKeypoints[{0, 3, 0}];
+                double RElbowy = poseKeypoints[{0, 3, 1}];
+                double RWristx = poseKeypoints[{0, 4, 0}];
+                double RWristy = poseKeypoints[{0, 4, 1}];
+                deque<int> stick_end;
+                stick_end.push_back((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)));
+                stick_end.push_back((int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)));
+                stick_point.push(stick_end);
+
                 for (auto& datumPtr : *datumsPtr)
                 {
                     cv::Mat cvOutputData = OP_OP2CVMAT(datumPtr->cvOutputData);
-                    cv::bitwise_not(cvOutputData, cvOutputData);
+                    deque<int> current_stick_end = stick_point.front();
+                    stick_point.pop();
+                    cv::Point stick_end(current_stick_end.front(), current_stick_end.back());
+                    cv::circle(cvOutputData, stick_end, 5, cv::Scalar(0, 0, 255), -1);
+
+                    // cv::bitwise_not(cvOutputData, cvOutputData);
                 }
             }
         }
