@@ -18,8 +18,8 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 2
-#define MIN_VELOCITY 5
+#define DURATION 5
+#define MIN_VELOCITY 10
 
 int fin_state = 0;
 
@@ -84,7 +84,7 @@ public:
                         cv::Point b(stick_point[i][0],stick_point[i][1]);
                         cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
                     }
-                    cv::bitwise_not(cvOutputData, cvOutputData);
+                    // cv::bitwise_not(cvOutputData, cvOutputData);
                 }
             }
         }
