@@ -67,6 +67,7 @@ public:
                         if (fin_state == 0 && stick_point.size() > 1)
                         {
                             stick_point.clear();
+                            op::opLog("haha lalal", op::Priority::High);
                         }
                     }
                     else{
