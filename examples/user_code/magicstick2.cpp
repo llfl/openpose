@@ -69,16 +69,16 @@ public:
                         fin_state = (fin_state + 1) % DURATION;
                         if (fin_state == 0 && stick_point.size() > 1)
                         {
-                            cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_1UC1, 0);
+                            cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
 
                             for (int i = 1; i<stick_point.size(); ++i )
                             {
                                 // stick_pattern.at<cv::Vec3b>(stick_point[i][0],stick_point[i][1]) = 0;
                                 cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
                                 cv::Point b(stick_point[i][0],stick_point[i][1]);
-                                cv::line(stick_pattern, a, b, 1, 2);
+                                cv::line(stick_pattern, a, b, 0, 2);
                             }
-                            cv::Mat resize_pattern(28, 28, CV_1UC1);
+                            cv::Mat resize_pattern(28, 28, CV_8UC1);
                             cv::resize(stick_pattern, resize_pattern, 28, 28);
                             pattern_no ++;
                             cv::imshow(std::to_string(pattern_no), resize_pattern);
