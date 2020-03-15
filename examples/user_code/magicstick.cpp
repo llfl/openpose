@@ -42,7 +42,8 @@ void display(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& dat
         {
             // Display image
             const cv::Mat cvMat = OP_OP2CVCONSTMAT(datumsPtr->at(0)->cvOutputData);
-            long current_stick_end = stick_point.pop();
+            long current_stick_end = stick_point.front();
+            stick_point.pop();
             cv::Point stick_end(current_stick_end >> 16, current_stick_end && 0xFFFF);
             cv::circle(cvMat, stick_end, 5, cv::Scalar(0, 0, 255), -1);
             // cv::circle(cvMat, cv::Point(150,200), 100, cv::Scalar(0, 255, 0), -1);
