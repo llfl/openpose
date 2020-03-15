@@ -91,9 +91,10 @@ public:
                             int long_side = maxx-minx;
                             if(long_side < maxy-maxy) long_side = maxy - maxy;
                             cv::Rect area(minx, miny , long_side,long_side);
-                            cv::Mat crop_pattern = stick_pattern(area);
-                            cv::Mat resize_pattern(28, 28, CV_8UC1);
-                            cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
+                            cv::Mat resize_pattern = stick_pattern(area);
+                            // cv::Mat crop_pattern = stick_pattern(area);
+                            // cv::Mat resize_pattern(28, 28, CV_8UC1);
+                            // cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
                             pattern_no ++;
                             cv::imshow(std::to_string(pattern_no), resize_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello1.jpg", resize_pattern);
