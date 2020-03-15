@@ -17,7 +17,7 @@ using namespace std;
 #define STICK_RELATIVE_LENGTH 2
 #define DURATION 90
 
-queue<long int> stick_point;
+queue<deque<int> > stick_point;
 
 
 // Custom OpenPose flags
@@ -44,7 +44,7 @@ void display(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& dat
             const cv::Mat cvMat = OP_OP2CVCONSTMAT(datumsPtr->at(0)->cvOutputData);
             long int current_stick_end = stick_point.front();
             stick_point.pop();
-            cv::Point stick_end(current_stick_end >> 16, current_stick_end & 0xFFFF);
+            cv::Point stick_end(current_stick_end.front(), current_stick_end.back());
             cv::circle(cvMat, stick_end, 5, cv::Scalar(0, 0, 255), -1);
             // cv::circle(cvMat, cv::Point(150,200), 100, cv::Scalar(0, 255, 0), -1);
             cv::imshow(OPEN_POSE_NAME_AND_VERSION + " - Tutorial C++ API", cvMat);
@@ -97,12 +97,12 @@ void printKeypoints(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>
                 double RWristx = poseKeypoints[{person, 4, 0}];
                 double RWristy = poseKeypoints[{person, 4, 1}];
                 // double length_arm = sqrt(pow(RElbowx - RWristx, 2) + pow(RElbowy - RWristy, 2));
-                int a = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
-                int b = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
+                deque<int> stick_end;
+                stick_end.push_back((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)));
+                stick_end.push_back((int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)));
                 // long stick_end = ((int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx))) << 16 + ((int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy)))&0xffff;
 
-                long stick_end = a*(1<<15) + b;
-                op::opLog("ais"+std::to_string(a)+"bis"+std::to_string(b)+"allis"+std::to_string(stick_end),op::Priority::High);
+                // op::opLog("ais"+std::to_string(a)+"bis"+std::to_string(b)+"allis"+std::to_string(stick_end),op::Priority::High);
                 // cv:Point stick_end(round(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx)), rount(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
                 stick_point.push(stick_end);
             }
