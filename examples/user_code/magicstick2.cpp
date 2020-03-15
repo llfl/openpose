@@ -64,7 +64,7 @@ public:
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
                     for (int i = 1; i<stick_point.size(); ++i )
                     {
-                        cv::Point last_point(stick_point[i][0],stick_point[i][1]);
+                        cv::Point last_point(stick_point[i-1][0],stick_point[i-1][1]);
                         cv::Point now_point(stick_point[i][0],stick_point[i][1]);
                         cv::line(cvOutputData, last_point, now_point, cv::Scalar(0, 255, 0), 2);
                     }
