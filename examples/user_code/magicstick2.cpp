@@ -18,7 +18,7 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 10
+#define DURATION 20
 #define MIN_VELOCITY 5
 
 int fin_state = 0;
