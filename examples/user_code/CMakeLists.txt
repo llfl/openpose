@@ -6,7 +6,8 @@
 #     # ...
 #     ADD_HERE_YOUR_FILEn.cpp)
  set(USER_CODE_FILES
-     magicstick.cpp)
+     magicstick.cpp
+     magicstick2.cpp)
 
 foreach(USER_CODE_FILE ${USER_CODE_FILES})
 
