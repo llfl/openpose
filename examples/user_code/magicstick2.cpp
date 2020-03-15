@@ -19,7 +19,7 @@
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
 #define DURATION 2
-#define MIN_VELOCITY 1000
+#define MIN_VELOCITY 100
 
 int fin_state = 0;
 
@@ -55,7 +55,7 @@ public:
                 stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                 stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
                 vector<int>stick_last = stick_point.back();
-                if(pow(stick_last[0] - stick_end[0], 2) + pow(stick_last[1] - stick_end[1], 2) <= MIN_VELOCITY)
+                if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
                 {
                     fin_state = (fin_state + 1) % DURATION;
                     if (fin_state == 0 && stick_point.size() > 1)
