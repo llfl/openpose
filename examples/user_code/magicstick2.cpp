@@ -18,7 +18,7 @@
 
 using namespace std;
 #define STICK_RELATIVE_LENGTH 2
-#define DURATION 90
+#define DURATION 50
 
 vector<vector<int> > stick_point;
 
