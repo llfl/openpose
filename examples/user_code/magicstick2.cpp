@@ -59,7 +59,7 @@ public:
                     cv::Point current_stick_end(stick_point.back()[0],stick_point.back()[1]);
                     if(stick_point.size() >= DURATION)
                     {
-                        stick_point.erase(stick_point.front());
+                        stick_point.erase(stick_point.begin());
                     }
                     cv::circle(cvOutputData, current_stick_end, 5, cv::Scalar(0, 0, 255), -1);
 
