@@ -48,17 +48,16 @@ public:
 
                 for (auto& datumPtr : *datumsPtr)
                 {
-                    const auto& poseKeypoints = datumsPtr->poseKeypoints;
+                    const auto& poseKeypoints = datumPtr->poseKeypoints;
                     double RElbowx = poseKeypoints[{0, 3, 0}];
                     double RElbowy = poseKeypoints[{0, 3, 1}];
                     double RWristx = poseKeypoints[{0, 4, 0}];
                     double RWristy = poseKeypoints[{0, 4, 1}];
                     vector<int>stick_end(2);
-
                     stick_end[0] = (int)(RWristx + STICK_RELATIVE_LENGTH * (RWristx - RElbowx));
                     stick_end[1] = (int)(RWristy + STICK_RELATIVE_LENGTH * (RWristy - RElbowy));
                     vector<int>stick_last = stick_point.back();
-                    if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <=   MIN_VELOCITY)
+                    if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
                     {
                         fin_state = (fin_state + 1) % DURATION;
                         if (fin_state == 0 && stick_point.size() > 1)
