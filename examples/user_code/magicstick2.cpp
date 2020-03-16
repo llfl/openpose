@@ -134,12 +134,11 @@ public:
                             net = cv::dnn::readNetFromCaffe(modelTxt, modelBin);
                             cv::Mat inputBlob = cv::dnn::blobFromImage(crop_pattern,1.0f,cv::Size(28,28),128);
                             net.setInput(inputBlob, "data");
-                            cv::Mat prob = net.forward("prob");
-                            // cv::Point classNumber;
-                            // float classProb;
-                            // cv::minMaxLoc(prob.data, NULL, classProb, NULL, &classNumber); 
-                            std::cout<<prob<<std::endl;
-                            // op::opLog("haha lalal it is "+ std::to_string(classNumber.x)+"and probabilty is "+ std::to_string(classProb), op::Priority::High);
+                            std::vector<float> prob = std::vector<float>(net.forward("prob"));
+                            auto predno = max_element(prob.begin(), prob.end());
+                            std::cout<<"I guess the pattern is " << predno - prob.begin()<< std::endl;
+                            op::opLog("over! ", op::Priority::High);
+                            // std::cout<<""<<std::endl;
                             stick_point.clear();
                         }
                     }
