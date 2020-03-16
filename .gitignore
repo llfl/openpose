@@ -138,3 +138,4 @@ html/
 
 ######################### Validation Scripts & Testing #########################
 output*/
+*.jpg

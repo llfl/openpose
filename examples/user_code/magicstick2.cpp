@@ -86,18 +86,18 @@ public:
 
                                 cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
                                 cv::Point b(stick_point[i][0],stick_point[i][1]);
-                                cv::line(stick_pattern, a, b, 0, 2);
+                                cv::line(stick_pattern, a, b, 0, 10);
                             }
                             int long_side = maxx-minx;
                             if(long_side < maxy-miny) long_side = maxy - miny;
-                            cv::Rect area(minx-2, miny-2 , long_side+2,long_side+2);
-                            cv::Mat resize_pattern = stick_pattern(area);
-                            // cv::Mat crop_pattern = stick_pattern(area);
-                            // cv::Mat resize_pattern(28, 28, CV_8UC1);
-                            // cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
+                            cv::Rect area(minx-16, miny-16 , long_side+16,long_side+16);
+                            // cv::Mat resize_pattern = stick_pattern(area);
+                            cv::Mat crop_pattern = stick_pattern(area);
+                            cv::Mat resize_pattern(28, 28, CV_8UC1);
+                            cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
                             pattern_no ++;
-                            cv::imshow(std::to_string(pattern_no), resize_pattern);
-                            cv::imwrite(std::to_string(pattern_no)+"hello1.jpg", resize_pattern);
+                            // cv::imshow(std::to_string(pattern_no), resize_pattern);
+                            cv::imwrite(std::to_string(pattern_no)+"hello2.jpg", resize_pattern);
                             
                             op::opLog("haha lalal", op::Priority::High);
                             stick_point.clear();
