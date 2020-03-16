@@ -6,10 +6,12 @@
     // 4. Display the rendered pose.
 // If the user wants to learn to use the OpenPose C++ library, we highly recommend to start with the examples in
 // `examples/tutorial_api_cpp/`.
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/dnn.hpp>
 
-#include <caffe/caffe.hpp>
+// #include <caffe/caffe.hpp>
 
 // Command-line user interface
 #include <openpose/flags.hpp>
@@ -97,32 +99,47 @@ public:
                             cv::Mat crop_pattern = stick_pattern(area);
                             cv::Mat resize_pattern(28, 28, CV_8UC1);
                             cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
+                            cv::Mat float_pattern;
+                            resize_pattern.convertTo(float_pattern, CV_32FC1);
+                            // cv::Mat normalized_pattern;
+                            // cv::subtract(float_pattern, mean_, normalized_pattern);
                             pattern_no ++;
                             // cv::imshow(std::to_string(pattern_no), resize_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello2.jpg", resize_pattern);
 
-                            caffe::Caffe::set_mode(Caffe::GPU);
-                            caffe::Net<type> lenet("models/lenet.prototxt",caffe::TEST);
-                            lenet.CopyTrainedLayersFrom("models/lenet_iter_10000.caffemodel");
-                            caffe::Blob<type> *input_ptr = lenet.input_blobs()[0];
-                            input_ptr->Reshape(1,1,28,28);
+                            // caffe::Caffe::set_mode(caffe::Caffe::GPU);
+                            // caffe::Net<float> lenet("models/lenet.prototxt",caffe::TEST);
+                            // lenet.CopyTrainedLayersFrom("models/lenet_iter_10000.caffemodel");
+                            // caffe::Blob<float> *input_ptr = lenet.input_blobs()[0];
+                            // input_ptr->Reshape(1,1,28,28);
 
-                            caffe::Blob<type> *output_ptr= lenet.output_blobs()[0];
-                            output_ptr->Reshape(1,10,1,1);
+                            // caffe::Blob<float> *output_ptr= lenet.output_blobs()[0];
+                            // output_ptr->Reshape(1,10,1,1);
 
-                            input_ptr->set_gpu_data(resize_pattern);
-                            lenet.Forward();
-                            const type* begin = output_ptr->cpu_data();
+                            // input_ptr->set_cpu_data(reinterpret_cast<float*>(float_pattern.data));
+                            // lenet.Forward();
+                            // const float* begin = output_ptr->gpu_data();
     
 
-                            int index=0;
-                            for(int i=1;i<10;i++)
-                            {
-                                if(begin[index]<begin[i])
-                                    index=i;
-                            }
+                            // int index=0;
+                            // for(int i=1;i<10;i++)
+                            // {
+                            //     if(begin[index]<begin[i])
+                            //         index=i;
+                            // }
 
-                            op::opLog("haha lalal it is "+ std::to_string(begin[index]), op::Priority::High);
+                            cv::String modelTxt = "models/lenet.prototxt";
+                            cv::String modelBin = "models/lenet_iter_10000.caffemodel";
+                            cv::dnn::Net net;
+                            net = cv::dnn::readNetFromCaffe(modelTxt, modelBin);
+                            cv::Mat inputBlob = cv::dnn::blobFromImage(crop_pattern,1.0f,cv::Size(28,28),128);
+                            net.setInput(inputBlob, "data");
+                            cv::Mat prob = net.forward("prob");
+                            // cv::Point classNumber;
+                            // float classProb;
+                            // cv::minMaxLoc(prob.data, NULL, classProb, NULL, &classNumber); 
+                            std::cout<<prob<<std::endl;
+                            // op::opLog("haha lalal it is "+ std::to_string(classNumber.x)+"and probabilty is "+ std::to_string(classProb), op::Priority::High);
                             stick_point.clear();
                         }
                     }
