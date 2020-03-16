@@ -9,6 +9,8 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
 
+#include <caffe/caffe.hpp>
+
 // Command-line user interface
 #include <openpose/flags.hpp>
 // OpenPose dependencies
@@ -98,8 +100,29 @@ public:
                             pattern_no ++;
                             // cv::imshow(std::to_string(pattern_no), resize_pattern);
                             cv::imwrite(std::to_string(pattern_no)+"hello2.jpg", resize_pattern);
-                            
-                            op::opLog("haha lalal", op::Priority::High);
+
+                            caffe::Caffe::set_mode(Caffe::GPU);
+                            caffe::Net<type> lenet("models/lenet.prototxt",caffe::TEST);
+                            lenet.CopyTrainedLayersFrom("models/lenet_iter_10000.caffemodel");
+                            caffe::Blob<type> *input_ptr = lenet.input_blobs()[0];
+                            input_ptr->Reshape(1,1,28,28);
+
+                            caffe::Blob<type> *output_ptr= lenet.output_blobs()[0];
+                            output_ptr->Reshape(1,10,1,1);
+
+                            input_ptr->set_gpu_data(resize_pattern);
+                            lenet.Forward();
+                            const type* begin = output_ptr->cpu_data();
+    
+
+                            int index=0;
+                            for(int i=1;i<10;i++)
+                            {
+                                if(begin[index]<begin[i])
+                                    index=i;
+                            }
+
+                            op::opLog("haha lalal it is "+ std::to_string(begin[index]), op::Priority::High);
                             stick_point.clear();
                         }
                     }
