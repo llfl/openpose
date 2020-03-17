@@ -21,9 +21,11 @@
 #include <cmath>
 
 using namespace std;
-#define STICK_RELATIVE_LENGTH 2
-#define DURATION 20
-#define MIN_VELOCITY 5
+#define STICK_RELATIVE_LENGTH 1
+#define DURATION 3
+#define EXCLUTION 20
+#define MIN_VELOCITY 20
+
 
 int fin_state = 0;
 int pattern_no = 0;
@@ -68,10 +70,10 @@ public:
                         stick_point.push_back(stick_end);
                     }
                     vector<int>stick_last = stick_point.back();
-                    if(abs(stick_last[0] - stick_end[0]) <= MIN_VELOCITY &&  abs(stick_last[1] - stick_end[1]) <= MIN_VELOCITY)
+                    if(pow(stick_last[0] - stick_end[0],2) + pow(stick_last[1] - stick_end[1],2) <= MIN_VELOCITY)
                     {
                         fin_state = (fin_state + 1) % DURATION;
-                        if (fin_state == 0 && stick_point.size() > 1)
+                        if (fin_state == 0 && stick_point.size() >= EXCLUTION)
                         {
                             cv::Mat stick_pattern(cvOutputData.rows, cvOutputData.cols, CV_8UC1, 255);
                             int minx, maxx, miny, maxy;
@@ -99,13 +101,15 @@ public:
                             cv::Mat crop_pattern = stick_pattern(area);
                             cv::Mat resize_pattern(28, 28, CV_8UC1);
                             cv::resize(crop_pattern, resize_pattern, cv::Size(28,28));
+                            cv::Mat flip_pattern;
+                            cv::flip(resize_pattern,flip_pattern, 1);
                             cv::Mat float_pattern;
-                            resize_pattern.convertTo(float_pattern, CV_32FC1);
+                            flip_pattern.convertTo(float_pattern, CV_32FC1);
                             // cv::Mat normalized_pattern;
                             // cv::subtract(float_pattern, mean_, normalized_pattern);
                             pattern_no ++;
                             // cv::imshow(std::to_string(pattern_no), resize_pattern);
-                            cv::imwrite(std::to_string(pattern_no)+"hello2.jpg", resize_pattern);
+                            cv::imwrite(std::to_string(pattern_no)+"hello2.jpg", flip_pattern);
 
                             // caffe::Caffe::set_mode(caffe::Caffe::GPU);
                             // caffe::Net<float> lenet("models/lenet.prototxt",caffe::TEST);
@@ -142,6 +146,10 @@ public:
                             stick_point.clear();
                         }
                     }
+                    else if(fin_state == 0 && stick_point.size() < EXCLUTION)
+                    {
+                        stick_point.clear();
+                    }
                     else{
                         stick_point.push_back(stick_end);
                     }
@@ -154,7 +162,7 @@ public:
                     {
                         cv::Point a(stick_point[i-1][0],stick_point[i-1][1]);
                         cv::Point b(stick_point[i][0],stick_point[i][1]);
-                        cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 2);
+                        cv::line(cvOutputData, a, b, cv::Scalar(0, 255, 0), 10);
                     }
                     // cv::bitwise_not(cvOutputData, cvOutputData);
                 }
